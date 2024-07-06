@@ -1,7 +1,7 @@
 pandas
 os
 streamlit
-matplotlib.pyplot
+matplotlib
 seaborn
 folium
 streamlit_folium
