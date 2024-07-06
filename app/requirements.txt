@@ -1,0 +1,7 @@
+pandas
+os
+streamlit
+matplotlib.pyplot
+seaborn
+folium
+streamlit_folium
