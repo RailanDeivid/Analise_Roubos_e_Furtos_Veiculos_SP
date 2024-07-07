@@ -12,7 +12,8 @@ if "data" not in st.session_state:
     st.session_state["data"] = df
 
 
-# Define o layout da página
+
+# Define o layout da pagina
 st.set_page_config(
     page_title="Home",
     page_icon="🏠", 
