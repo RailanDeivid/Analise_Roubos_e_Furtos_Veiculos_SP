@@ -1,22 +1,24 @@
 import pandas as pd
 import os
 import streamlit as st
-import matplotlib.pyplot as plt
-import seaborn as sns
-import folium
-from streamlit_folium import folium_static
 
 # Função para carregar os dados
 if "data" not in st.session_state:
-    # data_path = os.path.abspath(os.path.join(os.getcwd(), '..', 'data', 'processed','VeiculosSubtraidos.parquet'))
     # Caminho dos arquivos
     path = os.path.dirname(__file__)
     my_data = path+'/data/VeiculosSubtraidos.parquet'
     df = pd.read_parquet(my_data)
     st.session_state["data"] = df
 
-# Define o layout da página para wide
-st.set_page_config(layout="wide")
+
+# Define o layout da página
+st.set_page_config(
+    page_title="Home",
+    page_icon="🏠", 
+    initial_sidebar_state="expanded",
+    layout="wide",
+    )
+
 
 # setando titulo
 st.markdown("""
