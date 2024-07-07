@@ -10,8 +10,7 @@ from streamlit_folium import folium_static
 if "data" not in st.session_state:
     # data_path = os.path.abspath(os.path.join(os.getcwd(), '..', 'data', 'processed','VeiculosSubtraidos.parquet'))
     # Caminho dos arquivos
-    path = os.path.dirname(__file__)
-    my_data = path+'/data/processed/VeiculosSubtraidos.parquet'
+    my_data = '../data/processed/VeiculosSubtraidos.parquet'
     df = pd.read_parquet(my_data)
     st.session_state["data"] = df
 
