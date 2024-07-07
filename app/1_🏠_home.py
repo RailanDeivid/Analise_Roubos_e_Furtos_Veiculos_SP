@@ -2,14 +2,16 @@ import pandas as pd
 import os
 import streamlit as st
 
-# Função para carregar os dados
-if "data" not in st.session_state:
-    # Caminho dos arquivos
-    path = os.path.dirname(__file__)
-    my_data = path+'/data/VeiculosSubtraidos.parquet'
-    df = pd.read_parquet(my_data)
-    st.session_state["data"] = df
-
+@st.cache_data()
+def carregar_dados():
+    # Função para carregar os dados
+    if "data" not in st.session_state:
+        # Caminho dos arquivos
+        path = os.path.dirname(__file__)
+        my_data = path+'/data/VeiculosSubtraidos.parquet'
+        df = pd.read_parquet(my_data)
+        st.session_state["data"] = df
+carregar_dados()
 
 # Define o layout da página
 st.set_page_config(
