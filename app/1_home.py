@@ -22,17 +22,18 @@ st.set_page_config(
     )
 
 
-# setando titulo
-st.markdown("""
-    <style>
-        .rounded-title {
-            text-align: center; 
-            font-size: 40px;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+# # setando titulo
+# st.markdown("""
+#     <style>
+#         .rounded-title {
+#             text-align: center; 
+#             font-size: 40px;
+#         }
+#     </style>
+#     """, unsafe_allow_html=True)
 
-st.markdown("<h1 class='rounded-title'>Análise de Dados Públicos de Furtos e Roubos no municipio de Guarulhos-SP.</h1>", unsafe_allow_html=True)
+# st.markdown("<h1 class='rounded-title'>Análise de Dados Públicos de Furtos e Roubos no municipio de Guarulhos-SP.</h1>", unsafe_allow_html=True)
+st.header('Análise de Dados Públicos de Furtos e Roubos no municipio de Guarulhos-SP', divider='rainbow')
 
 # setando informações
 st.markdown(
@@ -49,4 +50,23 @@ st.markdown("""
     - **Engajamento Comunitário:**
         - Além da análise técnica, o projeto busca promover o engajamento comunitário através da divulgação dos resultados. Isso inclui a conscientização sobre questões de segurança, a promoção de práticas preventivas e a participação ativa dos cidadãos na promoção de um ambiente mais seguro.
 """, unsafe_allow_html=True)
+
+st.markdown("""
+- **<h3 style='font-size: 20px;'>Informações dos Dados:</h3>**
+Os dados usados para o desenvolvimento desse projeto são dados abertos da [Secretaria de Segurança Publica de São paulo (SSP)](https://www.ssp.sp.gov.br/estatistica/consultas)
+        
+    - São Paulo é pioneiro na divulgação mensal dos dados estatísticos por Estado, área, município e unidade policial. Os índices também são divulgados trimestralmente. Conteúdo ajuda a monitorar a evolução das tendências criminais e o planejamento do Estado e das polícias.
+    - As estatísticas criminais são utilizadas para retratar a situação da segurança pública e permitir o planejamento de ações policiais e de investimentos no setor. Em São Paulo, 
+            a compilação dos dados é feita pela Secretaria da Segurança Pública, por intermédio da Coordenadoria de Análise e Planejamento (CAP) - responsável pela análise dos dados de interesse policial e pela realização de estudos para prevenir e reprimir a criminalidade.
+            
+    - No site das SSP, você pode encontrar:
+        - Dados criminais
+        - Dados de Produtividade
+        - Morte Decorrente de Intervenção Policial
+        - Celulares subtraídos
+        - Veículos subtraídos
+        - Objetos subtraídos
+    
+""", unsafe_allow_html=True)
+
 
