@@ -2,6 +2,7 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 import folium
+import time
 from streamlit_folium import folium_static
 from folium.plugins import MarkerCluster
 
@@ -168,6 +169,9 @@ st.plotly_chart(fig_furtos)
 def criar_mapa(df):
     st.header('Mapa de Ocorrências na cidade de Guarulhos-SP',divider='rainbow')
     st.write("Click para expandir as ocorrências. Ao expandir click no ícone do carro para ver informações.")
+
+    with st.spinner('Aguarde, carregando...'):
+        time.sleep(15)
 
     # Setando configurações iniciais do mapa
     mapa = folium.Map(location=[-23.42952840511497, -46.476692195126226], zoom_start=12, tiles='OpenStreetMap', alpha=0)
