@@ -82,7 +82,7 @@ fig_mes = px.bar(
     title=f'Distribuição de Ocorrências por Mês em {ano_selecionado}',
     labels={'Mês': 'Mês', 'Número de Ocorrências': 'Número de Ocorrências'},
     color='Número de Ocorrências',
-    color_continuous_scale='viridis',
+    color_continuous_scale='city',
     text='Número de Ocorrências'
 )
 
@@ -125,7 +125,7 @@ fig_ano = px.bar(
     title='Distribuição de Roubos por Ano',
     labels={'Ano': 'Ano', 'Número de Ocorrências': 'Número de Ocorrências'},
     color='Número de Ocorrências',
-    color_continuous_scale='viridis',
+    color_continuous_scale='city',
     text='Número de Ocorrências'
 )
 
@@ -158,7 +158,7 @@ fig_dia_semana = px.bar(
     labels={'x': 'Dia da Semana', 'y': 'Número de Ocorrências'},
     title='Distribuição de Roubos por Dia da Semana',
     color=roubos_por_dia.values,
-    color_continuous_scale='viridis'
+    color_continuous_scale='city'
 )
 
 fig_dia_semana.update_layout(

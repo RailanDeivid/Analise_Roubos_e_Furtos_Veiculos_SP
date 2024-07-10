@@ -130,74 +130,116 @@ st.metric(
 # if bairro_selecionado != 'Todos os Bairros':
 #     titulo_grafico += f' | Bairro: {bairro_selecionado}'
 
-# ------------------------------------------------------------------------- Ocorrências por Tipo de Veículo --------------------------- #
+col1, col2 = st.columns([2, 2])
 
-# Cálculo de ocorrências por tipo de veículo
-furtos_por_tipos_veiculos = df_atual['DESCR_TIPO_VEICULO'].value_counts().head(30).reset_index()
-furtos_por_tipos_veiculos.columns = ['DESCR_TIPO_VEICULO', 'NUMERO_DE_FURTOS']
+with col1:
 
-# Plotar o gráfico de barras com Plotly
-fig_furtos_tipo_veiculo = px.bar(
-    furtos_por_tipos_veiculos,
-    x='DESCR_TIPO_VEICULO',
-    y='NUMERO_DE_FURTOS',
-    title=f'Top 20 Ocorrências por Tipo de Veículo em {mes_selecionado} de {ano_selecionado}',
-    labels={'DESCR_TIPO_VEICULO': 'Tipo de Veículo', 'NUMERO_DE_FURTOS': 'Número de Ocorrências'},
-    color='NUMERO_DE_FURTOS',
-    color_continuous_scale='viridis',
-    text='NUMERO_DE_FURTOS'
-)
+    # ------------------------------------------------------------------------- Ocorrências por Tipo de Veículo --------------------------- #
 
-fig_furtos_tipo_veiculo.update_layout(
-    width=1700,
-    height=600,
-    title_x=0.2,
-    xaxis_title='Tipo de Veículo',
-    yaxis_title='Número de Ocorrências',
-    title_font=dict(size=26)
-)
+    # Cálculo de ocorrências por tipo de veículo
+    furtos_por_tipos_veiculos = df_atual['DESCR_TIPO_VEICULO'].value_counts().head(30).reset_index()
+    furtos_por_tipos_veiculos.columns = ['DESCR_TIPO_VEICULO', 'NUMERO_DE_FURTOS']
 
-# Ajustar a posição dos rótulos dos valores para furtos
-fig_furtos_tipo_veiculo.update_traces(texttemplate='%{text}', textposition='outside')
-fig_furtos_tipo_veiculo.update_yaxes(range=[0, furtos_por_tipos_veiculos['NUMERO_DE_FURTOS'].max() * 1.1])  # Ajuste do intervalo do eixo y
+    # Plotar o gráfico de barras com Plotly (barras horizontais)
+    fig_furtos_tipo_veiculo = px.bar(
+        furtos_por_tipos_veiculos,
+        x='NUMERO_DE_FURTOS',  
+        y='DESCR_TIPO_VEICULO', 
+        title=f'Top 10 Ocorrências por Tipo de Veículo em {mes_selecionado} de {ano_selecionado}',
+        labels={'DESCR_TIPO_VEICULO': 'Tipo de Veículo', 'NUMERO_DE_FURTOS': 'Número de Ocorrências'},
+        color='NUMERO_DE_FURTOS', 
+        color_continuous_scale='bluered',  
+        text='NUMERO_DE_FURTOS',  
+        orientation='h'
+    )
 
-# Exibir o gráfico no Streamlit
-st.plotly_chart(fig_furtos_tipo_veiculo)
+    fig_furtos_tipo_veiculo.update_layout(
+        width=1500,
+        height=600,
+        title_x=0.1,
+        xaxis_title='Número de Ocorrências',
+        yaxis_title='Tipo de Veículo',
+        title_font=dict(size=20),
+        xaxis_tickangle=0,  
+        xaxis_tickmode='array', 
+        yaxis={'categoryorder':'total ascending'}  
+    )
 
+    # Ajustar a posição dos rótulos dos valores para furtos
+    fig_furtos_tipo_veiculo.update_traces(texttemplate='%{text}', textposition='auto')
+    #fig_furtos_tipo_veiculo.update_yaxes(range=[0, furtos_por_tipos_veiculos['NUMERO_DE_FURTOS'].max() * 1.1])  # Ajuste do intervalo do eixo y
 
-# ------------------------------------------------------------------------- Ocorrências por Marca --------------------------- #
+    # Exibir o gráfico no Streamlit
+    st.plotly_chart(fig_furtos_tipo_veiculo)
 
-# Cálculo de ocorrências por marca/modelo
-furtos_por_marca = df_atual['DESCR_MARCA_VEICULO'].value_counts().head(10).reset_index()
-furtos_por_marca.columns = ['DESCR_MARCA_VEICULO', 'NUMERO_DE_FURTOS']
+with col2:
+    # ------------------------------------------------------------------------- Ocorrências por Marca --------------------------- #
 
-# Plotar o gráfico de barras com Plotly
-fig_furtos_marca = px.bar(
-    furtos_por_marca,
-    x='DESCR_MARCA_VEICULO',
-    y='NUMERO_DE_FURTOS',
-    title=f'Top 10 Ocorrências por Marca/Modelo em {mes_selecionado} de {ano_selecionado}',
-    labels={'DESCR_MARCA_VEICULO': 'Marca/Modelo', 'NUMERO_DE_FURTOS': 'Número de Ocorrências'},
-    color='NUMERO_DE_FURTOS',
-    color_continuous_scale='viridis',
-    text='NUMERO_DE_FURTOS'
-)
+    # Cálculo de ocorrências por marca/modelo
+    furtos_por_marca = df_atual['DESCR_MARCA_VEICULO'].value_counts().head(10).reset_index()
+    furtos_por_marca.columns = ['DESCR_MARCA_VEICULO', 'NUMERO_DE_FURTOS']
 
-fig_furtos_marca.update_layout(
-    width=1700,
-    height=600,
-    title_x=0.2,
-    xaxis_title='Marca/Modelo',
-    yaxis_title='Número de Ocorrências',
-    title_font=dict(size=26)
-)
+    # # Plotar o gráfico de barras com Plotly
+    # fig_furtos_marca = px.bar(
+    #     furtos_por_marca,
+    #     x='DESCR_MARCA_VEICULO',
+    #     y='NUMERO_DE_FURTOS',
+    #     title=f'Top 10 Ocorrências por Marca/Modelo em {mes_selecionado} de {ano_selecionado}',
+    #     labels={'DESCR_MARCA_VEICULO': 'Marca/Modelo', 'NUMERO_DE_FURTOS': 'Número de Ocorrências'},
+    #     color='NUMERO_DE_FURTOS',
+    #     color_continuous_scale='cividis',
+    #     text='NUMERO_DE_FURTOS'
+    # )
 
-# Ajustar a posição dos rótulos dos valores para furtos
-fig_furtos_marca.update_traces(texttemplate='%{text}', textposition='outside')
-fig_furtos_marca.update_yaxes(range=[0, furtos_por_marca['NUMERO_DE_FURTOS'].max() * 1.1])  # Ajuste do intervalo do eixo y
+    # fig_furtos_marca.update_layout(
+    #     width=1700,
+    #     height=600,
+    #     title_x=0.2,
+    #     xaxis_title='Marca/Modelo',
+    #     yaxis_title='Número de Ocorrências',
+    #     title_font=dict(size=26),
+    #     xaxis_tickangle=0,
+    #     xaxis_tickmode='array',
+    #     xaxis_tickvals=furtos_por_marca['DESCR_MARCA_VEICULO'],
+    #     xaxis_ticktext=[text[:10] + '<br>' + text[10:] if len(text) > 10 else text for text in furtos_por_marca['DESCR_MARCA_VEICULO']]  # Quebrar texto
+    # )
 
-# Exibir o gráfico no Streamlit
-st.plotly_chart(fig_furtos_marca)
+    # # Ajustar a posição dos rótulos dos valores para furtos
+    # fig_furtos_marca.update_traces(texttemplate='%{text}', textposition='outside')
+    # fig_furtos_marca.update_yaxes(range=[0, furtos_por_marca['NUMERO_DE_FURTOS'].max() * 1.1])  # Ajuste do intervalo do eixo y
+
+    # # Exibir o gráfico no Streamlit
+    # st.plotly_chart(fig_furtos_marca)
+
+    # Plotar o gráfico de barras com Plotly (barras horizontais)
+    fig_furtos_marca = px.bar(
+        furtos_por_marca,
+        y='DESCR_MARCA_VEICULO',  
+        x='NUMERO_DE_FURTOS',  
+        title=f'Top 10 Ocorrências por Marca/Modelo em {mes_selecionado} de {ano_selecionado}',
+        labels={'DESCR_MARCA_VEICULO': 'Marca/Modelo', 'NUMERO_DE_FURTOS': 'Número de Ocorrências'},
+        color='NUMERO_DE_FURTOS', 
+        color_continuous_scale='cividis',  
+        text='NUMERO_DE_FURTOS',  
+        orientation='h'
+    )
+
+    fig_furtos_marca.update_layout(
+        width=1400,
+        height=600,
+        title_x=0.1,
+        xaxis_title='Número de Ocorrências',
+        yaxis_title='Marca/Modelo',
+        title_font=dict(size=20),
+        yaxis={'categoryorder':'total ascending'}  # Ordenar categorias pelo total de ocorrências
+    )
+
+    # Ajustar a posição dos rótulos dos valores para furtos
+    fig_furtos_marca.update_traces(texttemplate='%{text}', textposition='auto')
+
+    # Exibir o gráfico no Streamlit
+    st.plotly_chart(fig_furtos_marca)
+
 
 
 # ------------------------------------------------------------------------- Ocorrências por Ano de Fabricação --------------------------- #
@@ -215,12 +257,12 @@ fig_furtos_ano_fabricacao = px.bar(
     title=f'Ocorrências por Ano de Fabricação do Veículo',
     labels={'ANO_FABRICACAO': 'Ano Fabricação', 'NUMERO_DE_FURTOS': 'Número de Ocorrências'},
     color='NUMERO_DE_FURTOS',
-    color_continuous_scale='viridis',
+    color_continuous_scale='deep',
     text='NUMERO_DE_FURTOS'
 )
 
 fig_furtos_ano_fabricacao.update_layout(
-    width=1100,
+    width=1900,
     height=600,
     title_x=0.2,
     xaxis_title='Ano Fabricação',
@@ -234,8 +276,6 @@ fig_furtos_ano_fabricacao.update_yaxes(range=[0, furtos_por_ano_fabricacao['NUME
 
 # Exibir o gráfico no Streamlit
 st.plotly_chart(fig_furtos_ano_fabricacao)
-
-
 
 
 

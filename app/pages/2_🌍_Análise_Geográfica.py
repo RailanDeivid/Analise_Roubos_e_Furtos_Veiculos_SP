@@ -5,6 +5,7 @@ import folium
 import time
 from streamlit_folium import folium_static
 from folium.plugins import MarkerCluster
+import streamlit_shadcn_ui as ui
 
 # Define o layout da página
 st.set_page_config(
@@ -112,12 +113,14 @@ else:
 
 st.header('Distribuição de Ocorrências por Bairro', divider='rainbow')
 
-st.metric(
-    label=f"Total de Ocorrências | {tipo_selecionado}", 
-    value=len(df_atual), 
-    delta=f"{delta:.2f}% {text}"  if isinstance(delta, float) else delta  ,
-    delta_color="inverse"
-)
+col1 = st.columns(1)
+with col1:
+    ui.metric_card(
+        title=f"Total de Ocorrências | {tipo_selecionado}", 
+        content=len(df_atual), 
+        description=f"{delta:.2f}% {text}"  if isinstance(delta, float) else delta  ,
+        key="card1"
+    )
 
 # ------------------------------------------------------------ CONFIGURAÇÕES DO GRAFICOS ---------------------------------------- # 
 # Calcula contagem por bairro
@@ -144,7 +147,7 @@ fig_furtos = px.bar(
     title=f'Top 20 Ocorrências em {mes_selecionado} de {ano_selecionado}',
     labels={'BAIRRO': 'Bairro', 'NUMERO_DE_FURTOS': 'Número de Ocorrências'},
     color='NUMERO_DE_FURTOS',
-    color_continuous_scale='viridis',
+    color_continuous_scale='bluered',
     text='NUMERO_DE_FURTOS'
 )
 
@@ -171,7 +174,7 @@ def criar_mapa(df):
     st.write("Click para expandir as ocorrências. Ao expandir click no ícone do carro para ver informações.")
 
     with st.spinner('Aguarde, carregando...'):
-        time.sleep(15)
+        time.sleep(20   )
 
     # Setando configurações iniciais do mapa
     mapa = folium.Map(location=[-23.42952840511497, -46.476692195126226], zoom_start=12, tiles='OpenStreetMap', alpha=0)
