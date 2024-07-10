@@ -113,13 +113,13 @@ else:
 
 st.header('Distribuição de Ocorrências por Bairro', divider='rainbow')
 
-col1 = st.columns(1)
-with col1:
-    ui.metric_card(
-        title=f"Total de Ocorrências | {tipo_selecionado}", 
-        content=len(df_atual), 
-        description=f"{delta:.2f}% {text}"  if isinstance(delta, float) else delta  ,
-        key="card1"
+col1 = st.columns(3)
+with col1[0]:
+    st.metric(
+        label=f"Total de Ocorrências | {tipo_selecionado}", 
+        value=len(df_atual), 
+        delta=f"{delta:.2f}% {text}"  if isinstance(delta, float) else delta  ,
+        delta_color="inverse"
     )
 
 # ------------------------------------------------------------ CONFIGURAÇÕES DO GRAFICOS ---------------------------------------- # 
@@ -139,12 +139,17 @@ furtos_por_bairro['BAIRRO'] = furtos_por_bairro['BAIRRO'].replace("nan", "NÃO I
 # if bairro_selecionado != 'Todos os Bairros':
 #     titulo_grafico += f' | Bairro: {bairro_selecionado}'
 
+if mes_selecionado == 'Todos os Meses':
+    title = f'Top 20 Bairros com mais Ocorrências em {ano_selecionado}'
+else:
+    title = f'Top 20 Bairros com mais Ocorrências em {mes_selecionado} de {ano_selecionado}'
+
 # Plotar o gráfico com Plotly para furtos
 fig_furtos = px.bar(
     furtos_por_bairro,
     x='BAIRRO',
     y='NUMERO_DE_FURTOS',
-    title=f'Top 20 Ocorrências em {mes_selecionado} de {ano_selecionado}',
+    title=title,
     labels={'BAIRRO': 'Bairro', 'NUMERO_DE_FURTOS': 'Número de Ocorrências'},
     color='NUMERO_DE_FURTOS',
     color_continuous_scale='bluered',

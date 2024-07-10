@@ -67,112 +67,219 @@ if tipo_veiculo_selecionado != 'Todos os Tipos':
 if marca_selecionada != 'Todas as Marcas':
     df_atual = df_atual[df_atual['DESCR_MARCA_VEICULO'] == marca_selecionada]
 
-# ------------------------------------------------------------ GRÁFICO DE ROUBOS POR MÊS ---------------------------------------- #
+
 st.header('Distribuição de Ocorrências por Períodos', divider='rainbow')
-roubos_por_mes = df_atual['DATA_OCORRENCIA_BO'].dt.month.value_counts().sort_index().reset_index()
-roubos_por_mes.columns = ['Mês', 'Número de Ocorrências']
+cols = st.columns([2, 3])
 
-meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
-roubos_por_mes['Mês'] = roubos_por_mes['Mês'].apply(lambda x: meses[x-1])
+with cols[1]:
+    # ------------------------------------------------------------ GRÁFICO DE ROUBOS POR MÊS ---------------------------------------- #
+    roubos_por_mes = df_atual['DATA_OCORRENCIA_BO'].dt.month.value_counts().sort_index().reset_index()
+    roubos_por_mes.columns = ['Mês', 'Número de Ocorrências']
 
-fig_mes = px.bar(
-    roubos_por_mes,
-    x='Mês',
-    y='Número de Ocorrências',
-    title=f'Distribuição de Ocorrências por Mês em {ano_selecionado}',
-    labels={'Mês': 'Mês', 'Número de Ocorrências': 'Número de Ocorrências'},
-    color='Número de Ocorrências',
-    color_continuous_scale='city',
-    text='Número de Ocorrências'
-)
+    meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+    roubos_por_mes['Mês'] = roubos_por_mes['Mês'].apply(lambda x: meses[x-1])
 
-fig_mes.update_layout(
-    width=1700,
-    height=600,
-    title_x=0.2,
-    xaxis_title='Mês',
-    yaxis_title='Número de Ocorrências',
-    title_font=dict(size=26)
-)
 
-fig_mes.update_traces(texttemplate='%{text}', textposition='outside')
+    # Criar o gráfico de linhas suaves
+    fig_mes = px.line(
+        roubos_por_mes,
+        x='Mês',
+        y='Número de Ocorrências',
+        title=f'Distribuição de Ocorrências por Mês em {ano_selecionado}',
+        labels={'Mês': 'Mês', 'Número de Ocorrências': 'Número de Ocorrências'},
+        line_shape='spline',  # Define as linhas como curvas suaves
+        render_mode='svg', # Renderização mais suave das curvas,
+        text = 'Número de Ocorrências'
+    )
 
-st.plotly_chart(fig_mes)
+    # Ajustar a cor da linha
+    fig_mes.update_traces(line=dict(color='red'), fill='tozeroy',fillcolor='rgba(255, 0, 0, 0.1)' )
+
+    fig_mes.update_layout(
+        width=1500,
+        height=450,
+        title_x=0.1,
+        xaxis_title='Mês',
+        yaxis_title='Número de Ocorrências',
+        title_font=dict(size=20)
+    )
+
+    fig_mes.update_traces(texttemplate='%{text}', textposition='top center')
+    fig_mes.update_yaxes(range=[0, roubos_por_mes['Número de Ocorrências'].max() + 201])
+
+
+    st.plotly_chart(fig_mes)
+
+
+    # fig_mes = px.bar(
+    #     roubos_por_mes,
+    #     x='Mês',
+    #     y='Número de Ocorrências',
+    #     title=f'Distribuição de Ocorrências por Mês em {ano_selecionado}',
+    #     labels={'Mês': 'Mês', 'Número de Ocorrências': 'Número de Ocorrências'},
+    #     color='Número de Ocorrências',
+    #     color_continuous_scale='bluered',
+    #     text='Número de Ocorrências'
+    # )
+
+    # fig_mes.update_layout(
+    #     width=1500,
+    #     height=450,
+    #     title_x=0.1,
+    #     xaxis_title='Mês',
+    #     yaxis_title='Número de Ocorrências',
+    #     title_font=dict(size=20)
+    # )
+
+    # fig_mes.update_traces(texttemplate='%{text}', textposition='auto')
+    # fig_mes.update_yaxes(range=[0, roubos_por_mes['Número de Ocorrências'].max() + 200]) 
+
+    # st.plotly_chart(fig_mes)
 
 # ------------------------------------------------------------ GRÁFICO DE ROUBOS POR ANO ---------------------------------------- #
+with cols[0]:
+    df_filtrado = df.copy()
+    if tipo_selecionado != 'Todas as Ocorrências':
+        df_filtrado = df_filtrado[df_filtrado['DESCR_OCORRENCIA_VEICULO'] == tipo_selecionado]
 
-df_filtrado = df.copy()
-if tipo_selecionado != 'Todas as Ocorrências':
-    df_filtrado = df_filtrado[df_filtrado['DESCR_OCORRENCIA_VEICULO'] == tipo_selecionado]
+    if bairro_selecionado != 'Todos os Bairros':
+        df_filtrado = df_filtrado[df_filtrado['BAIRRO'] == bairro_selecionado]
 
-if bairro_selecionado != 'Todos os Bairros':
-    df_filtrado = df_filtrado[df_filtrado['BAIRRO'] == bairro_selecionado]
+    if tipo_veiculo_selecionado != 'Todos os Tipos':
+        df_filtrado = df_filtrado[df_filtrado['DESCR_TIPO_VEICULO'] == tipo_veiculo_selecionado]
 
-if tipo_veiculo_selecionado != 'Todos os Tipos':
-    df_filtrado = df_filtrado[df_filtrado['DESCR_TIPO_VEICULO'] == tipo_veiculo_selecionado]
+    if marca_selecionada != 'Todas as Marcas':
+        df_filtrado = df_filtrado[df_filtrado['DESCR_MARCA_VEICULO'] == marca_selecionada]
 
-if marca_selecionada != 'Todas as Marcas':
-    df_filtrado = df_filtrado[df_filtrado['DESCR_MARCA_VEICULO'] == marca_selecionada]
+    roubos_por_ano = df_filtrado[df_filtrado['DATA_OCORRENCIA_BO'].dt.year.isin([2023, 2024])]
+    roubos_por_ano = roubos_por_ano['DATA_OCORRENCIA_BO'].dt.year.value_counts().sort_index().reset_index()
+    roubos_por_ano.columns = ['Ano', 'Número de Ocorrências']
 
-roubos_por_ano = df_filtrado[df_filtrado['DATA_OCORRENCIA_BO'].dt.year.isin([2023, 2024])]
-roubos_por_ano = roubos_por_ano['DATA_OCORRENCIA_BO'].dt.year.value_counts().sort_index().reset_index()
-roubos_por_ano.columns = ['Ano', 'Número de Ocorrências']
-
-fig_ano = px.bar(
-    roubos_por_ano,
-    x='Ano',
-    y='Número de Ocorrências',
-    title='Distribuição de Roubos por Ano',
-    labels={'Ano': 'Ano', 'Número de Ocorrências': 'Número de Ocorrências'},
-    color='Número de Ocorrências',
-    color_continuous_scale='city',
-    text='Número de Ocorrências'
-)
-
-fig_ano.update_layout(
-    width=1400,
-    height=600,
-    title_x=0.2,
-    xaxis_title='Ano',
-    yaxis_title='Número de Ocorrências',
-    title_font=dict(size=26),
-    xaxis=dict(
-        tickmode='array',
-        tickvals=[2023, 2024],
-        ticktext=['2023', '2024']
+    fig_ano = px.bar(
+        roubos_por_ano,
+        x='Ano',
+        y='Número de Ocorrências',
+        title='Distribuição de Ocorrências por Ano',
+        labels={'Ano': 'Ano', 'Número de Ocorrências': 'Número de Ocorrências'},
+        color='Número de Ocorrências',
+        color_continuous_scale='deep',
+        text='Número de Ocorrências'
     )
-)
 
-fig_ano.update_traces(texttemplate='%{text}', textposition='outside')
+    fig_ano.update_layout(
+        width=1400,
+        height=450,
+        title_x=0.1,
+        xaxis_title='Ano',
+        yaxis_title='Número de Ocorrências',
+        title_font=dict(size=20),
+        xaxis=dict(
+            tickmode='array',
+            tickvals=[2023, 2024],
+            ticktext=['2023', '2024']
+        )
+    )
 
-st.plotly_chart(fig_ano)
+    fig_ano.update_traces(texttemplate='%{text}', textposition='auto')
+    fig_ano.update_yaxes(range=[0, roubos_por_ano['Número de Ocorrências'].max() * 1.1]) 
+
+    st.plotly_chart(fig_ano)
 
 # ------------------------------------------------------------ ANÁLISE DE ROUBOS POR DIA DA SEMANA ---------------------------------------- #
+cols = st.columns([3, 2])
+with cols[1]:
+    df_atual['DIA_DA_SEMANA'] = df_atual['DATA_OCORRENCIA_BO'].dt.day_name()
+    # Dicionário de tradução dos dias da semana
+    traducao_dias_semana = {
+        'Monday': 'Segunda-feira',
+        'Tuesday': 'Terça-feira',
+        'Wednesday': 'Quarta-feira',
+        'Thursday': 'Quinta-feira',
+        'Friday': 'Sexta-feira',
+        'Saturday': 'Sábado',
+        'Sunday': 'Domingo'
+    }
+    df_atual['DIA_DA_SEMANA'] = df_atual['DIA_DA_SEMANA'].map(traducao_dias_semana)
+    roubos_por_dia = df_atual['DIA_DA_SEMANA'].value_counts().reindex(['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 
+                                                                'Quinta-feira', 'Sexta-feira', 'Sábado']).to_frame().reset_index()
+    roubos_por_dia.columns = ['Dia da Semana', 'Número de Ocorrências']
 
-df['DIA_DA_SEMANA'] = df['DATA_OCORRENCIA_BO'].dt.day_name()
-roubos_por_dia = df['DIA_DA_SEMANA'].value_counts().reindex(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
+    fig_dia_semana = px.bar(
+        roubos_por_dia,
+        x='Dia da Semana',
+        y='Número de Ocorrências',
+        labels={'x': 'Dia da Semana', 'y': 'Número de Ocorrências'},
+        title='Distribuição de Ocorrências por Dia da Semana',
+        color='Número de Ocorrências',
+        color_continuous_scale='amp'
+    )
 
-fig_dia_semana = px.bar(
-    x=roubos_por_dia.index,
-    y=roubos_por_dia.values,
-    labels={'x': 'Dia da Semana', 'y': 'Número de Ocorrências'},
-    title='Distribuição de Roubos por Dia da Semana',
-    color=roubos_por_dia.values,
-    color_continuous_scale='city'
-)
+    fig_dia_semana.update_layout(
+        width=1700,
+        height=450,
+        xaxis_title='Dia da Semana',
+        yaxis_title='Número de Ocorrências',
+        title_font=dict(size=18)
+    )
 
-fig_dia_semana.update_layout(
-    width=1400,
-    height=600,
-    title_x=0.2,
-    xaxis_title='Dia da Semana',
-    yaxis_title='Número de Ocorrências',
-    title_font=dict(size=24)
-)
-
-fig_dia_semana.update_traces(texttemplate='%{y}', textposition='outside')  
-fig_dia_semana.update_yaxes(range=[0, roubos_por_dia.max() * 1.1]) 
-st.plotly_chart(fig_dia_semana)
+    fig_dia_semana.update_traces(texttemplate='%{y}', textposition='outside')  
+    fig_dia_semana.update_yaxes(range=[0, roubos_por_dia['Número de Ocorrências'].max() * 1.3]) 
+    st.plotly_chart(fig_dia_semana)
 
 # ------------------------------------------------------------ ANÁLISE DE ROUBOS POR HORA DO DIA ---------------------------------------- #
 
+with cols[0]:
+    # Extrair apenas a hora como float
+    df_atual['HORA_OCORRENCIA'] = pd.to_datetime(df_atual['HORA_OCORRENCIA'], format='%H:%M:%S').dt.hour.astype('float64')
+    roubos_por_hora = df_atual['HORA_OCORRENCIA'].value_counts().sort_index().reset_index()
+    roubos_por_hora.columns = ['Hora da Ocorrencia', 'Número de Ocorrências']
+
+    # fig_dia_semana = px.bar(
+    #     roubos_por_hora,
+    #     x='Hora da Ocorrencia',
+    #     y='Número de Ocorrências',
+    #     labels={'x': 'Hora da Ocorrencia', 'y': 'Número de Ocorrências'},
+    #     title='Distribuição de Ocorrências por Hora',
+    #     color='Número de Ocorrências',
+    #     color_continuous_scale='dense'
+    # )
+
+    # fig_dia_semana.update_layout(
+    #     width=1700,
+    #     height=450,
+    #     xaxis_title='Hora da Ocorrencia',
+    #     yaxis_title='Número de Ocorrências',
+    #     title_font=dict(size=18)
+    # )
+
+    # fig_dia_semana.update_traces(texttemplate='%{y}', textposition='outside')  
+    # fig_dia_semana.update_yaxes(range=[0, roubos_por_hora['Número de Ocorrências'].max() * 1.1]) 
+    # st.plotly_chart(fig_dia_semana)
+
+    # Criar o gráfico de linhas
+    fig_dia_semana = px.line(
+        roubos_por_hora,
+        x='Hora da Ocorrencia',
+        y='Número de Ocorrências',
+        labels={'x': 'Hora da Ocorrencia', 'y': 'Número de Ocorrências'},
+        title='Distribuição de Ocorrências por Hora',
+        line_shape='spline',  # Define as linhas como curvas suaves
+        render_mode='svg', # Renderização mais suave das curvas,
+        text = 'Número de Ocorrências'
+    )
+
+    fig_dia_semana.update_layout(
+        width=1700,
+        height=450,
+        xaxis_title='Hora da Ocorrencia',
+        yaxis_title='Número de Ocorrências',
+        title_font=dict(size=18)
+    )
+
+    fig_dia_semana.update_traces(line=dict(color='purple'), fill='tozeroy',fillcolor='rgba(128, 0, 128, 0.1)')  # Define a cor das linhas como vermelho
+
+    fig_dia_semana.update_traces(texttemplate='%{y}', textposition='top center')
+    fig_dia_semana.update_yaxes(range=[0, roubos_por_hora['Número de Ocorrências'].max() * 1.2])
+
+    # Exibir o gráfico no Streamlit
+    st.plotly_chart(fig_dia_semana)
