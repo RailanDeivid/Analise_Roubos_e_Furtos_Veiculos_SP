@@ -179,7 +179,7 @@ def criar_mapa(df):
     st.write("Click para expandir as ocorrências. Ao expandir click no ícone do carro para ver informações.")
 
     with st.spinner('Aguarde, carregando...'):
-        time.sleep(20   )
+        time.sleep(40)
 
     # Setando configurações iniciais do mapa
     mapa = folium.Map(location=[-23.42952840511497, -46.476692195126226], zoom_start=12, tiles='OpenStreetMap', alpha=0)
