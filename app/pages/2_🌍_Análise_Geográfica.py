@@ -45,13 +45,15 @@ tipos_veiculos = ['Todos os Tipos'] + df['DESCR_TIPO_VEICULO'].unique().tolist()
 marcas = ['Todas as Marcas'] + df['DESCR_MARCA_VEICULO'].unique().tolist()
 
 # Selectbox 
-
-ano_selecionado = st.sidebar.selectbox('Ano', anos_disponiveis_furtos)
-bairro_selecionado = st.sidebar.selectbox('Selecionar Bairro', ['Todos os Bairros'] + df['BAIRRO'].unique().tolist())
-mes_selecionado = st.sidebar.selectbox('Mês', meses_disponiveis)
-tipo_veiculo_selecionado = st.sidebar.selectbox('Tipo Veículo', tipos_veiculos)
-tipo_selecionado = st.sidebar.selectbox('Tipo Ocorrência', tipo_ocorrencia)
-marca_selecionada = st.sidebar.selectbox('Marca/Modelo', marcas)
+with col1:
+    ano_selecionado = st.selectbox('Ano', anos_disponiveis_furtos)
+    bairro_selecionado = st.selectbox('Selecionar Bairro', ['Todos os Bairros'] + df['BAIRRO'].unique().tolist())
+with col2:
+    mes_selecionado = st.selectbox('Mês', meses_disponiveis)
+    tipo_veiculo_selecionado = st.selectbox('Tipo Veículo', tipos_veiculos)
+with col3:
+    tipo_selecionado = st.selectbox('Tipo Ocorrência', tipo_ocorrencia)
+    marca_selecionada = st.selectbox('Marca/Modelo', marcas)
 
 
 # Filtrar os dados pelo ano, mês selecionado, tipo de ocorrência, tipo de veículo e marca
